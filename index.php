@@ -45,7 +45,7 @@
 <textarea class="form-control" rows="5" readonly>
 aier me komi un pan
 oi komi poio
-ojala mañana pueda komerme unoz miz shokolates
+ojala mañana pueda komerme unoz miz shokolates vien hapetitozoz
 </textarea>
 </div>
 </div>
