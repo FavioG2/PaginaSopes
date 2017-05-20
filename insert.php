@@ -38,11 +38,36 @@
 
 <div class="container">
 <h2>- Publicar algo -</h2>
-<input type="text" class="form-control" id="canal" placeholder="Canal">
+<?php 
+
+echo 
+"<form action='' method='post'> 
+<input type = 'text' name = 'canal' placeholder='escribe tu usuario' />
+<input type = 'text'  name = 'mensaje' placeholder='escribe tu mensaje' />
 <br>
-<input type="text" class="form-control" id="msj" placeholder="Mensaje">
-<br>
- <button type="button" class="btn btn-success">¡Publicar!</button>
+<input type='submit' name='use_button' value='¡Publicar!' /> 
+</form>"; 
+$insertado = '0';
+$canal;
+if(isset($_POST['use_button'])) 
+{ 
+ $canal = $_POST['canal'];
+ $mensaje = $_POST['mensaje'];
+
+$mng = new MongoDB\Driver\Manager("mongodb://192.168.122.146:27017");
+
+ $insRec       = new MongoDB\Driver\BulkWrite;
+
+           $insRec->insert(['fecha' =>'20/05/2017', 'canal'=>$canal, 'mensaje'=>$mensaje]);
+          
+           $writeConcern = new MongoDB\Driver\WriteConcern(MongoDB\Driver\WriteConcern::MAJORITY, 1000);
+         
+             $result       = $mng->executeBulkWrite('bitacora.bitacora', $insRec, $writeConcern);
+
+
+echo "publikao";
+}
+?>
 
 </div>
 
