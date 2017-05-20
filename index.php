@@ -43,24 +43,63 @@
   <div class="panel-heading">Historias recientes</div>
   <div class="panel-body">
 <textarea class="form-control" rows="5" readonly>
-aier me komi un pan
-oi komi poio
-ojala mañana pueda komerme unoz miz shokolates vien hapetitozoz
+<?php
+
+$mng = new MongoDB\Driver\Manager("mongodb://192.168.122.146:27017");
+    $stats = new MongoDB\Driver\Command(["dbstats" => 1]);
+    $res = $mng->executeCommand("bitacora", $stats);
+    $query = new MongoDB\Driver\Query([]); 
+
+    $rows = $mng->executeQuery("bitacora.bitacora", $query);
+    
+    foreach ($rows as $row) {
+    
+        echo "$row->mensaje\n";
+    }
+
+?>
+
 </textarea>
 </div>
 </div>
 <br>
 
 <h2>-  Usuarios -</h2>
-<input type="text" class="form-control" placeholder="Introduce un ID de usuario">
-<button type="button" class="btn btn-success">Buscar publicaciones</button>
-<br>
+<?php 
+echo 
+"<form action='' method='post'> 
+<input type = 'text' name = 'canal' />
+<input type='submit' name='use_button' value='Buscar publicaciones' /> 
+</form>"; 
+$insertado = '0';
+$canal;
+if(isset($_POST['use_button'])) 
+{ 
+     $insertado = '1';
+     $canal = $_POST['canal'];
+} 
+
+?>
+
 <br>
 <div class="panel panel-success">  
 <div class="panel-heading">Historias del usuario</div>
   <div class="panel-body">
 <textarea class="form-control" readonly  rows="3">
+<?php
+if($insertado=='1'){
+$filter = ['canal' => $canal ];
+    $query = new MongoDB\Driver\Query($filter); 
 
+    $rows = $mng->executeQuery("bitacora.bitacora", $query);
+    
+    foreach ($rows as $row) {
+    
+        echo "$row->mensaje\n";
+    }
+
+}
+?>
 </textarea>
  </div>
 </div>

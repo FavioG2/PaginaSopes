@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+<?php
+$index = 0;
+?>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -38,17 +41,24 @@
 
 <div class="container">
 <h2>- Bitácora -</h2>
-<div class="form-group row">
-  <div class="col-xs-3">
-    <label for="ex1">Canal</label>
-    <input type="text" class="form-control" id="canal" placeholder="xxxx">
 
-  </div>
-  <div class="col-xs-3">
-    <label for="ex2"></label>
-	<br>
-	<button type="button" class="btn btn-success">Buscar</button>
-  </div>
+<?php 
+$mng = new MongoDB\Driver\Manager("mongodb://192.168.122.146:27017");
+$index = 0;
+echo 
+"<form action='' method='post'> 
+<input type = 'text' name = 'canal' placeholder = 'escribe el canal'/>
+<input type='submit' name='use_button' value='Buscar' /> 
+</form>"; 
+$insertado = '0';
+$canal;
+if(isset($_POST['use_button'])) 
+{ 
+     $insertado = '1';
+     $canal = $_POST['canal'];
+} 
+
+?>
 
 <div class ="panel panel-success">
   <table class="table table-striped">
@@ -62,12 +72,31 @@
     </thead>
     <tbody>
 	<td colspan="4"></td>
+<?php
+
+if($insertado=='1'){
+$filter = ['canal' => $canal ];
+    $query = new MongoDB\Driver\Query($filter); 
+
+    $rows = $mng->executeQuery("bitacora.bitacora", $query);
+$top = $index + 10;
+$iter = $index;
+$pos = 0;
+foreach ($rows as $row) {
+	echo "<tr>";   
+	echo "<td>"; 
+        echo "$row->fecha";
+	echo "</td><td>$row->_id</td><td>$row->canal</td><td>$row->mensaje</td>";
+	echo "</tr>";    
+}
+}
+?>
+
     </tbody>
   </table>
- <button type="button" class="btn btn-success">Ver más</button>
+<br>
+</div>
 
-</div>
-</div>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
   </body>
