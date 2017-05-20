@@ -67,7 +67,27 @@ $mng = new MongoDB\Driver\Manager("mongodb://192.168.122.146:27017");
 
 echo "publikao";
 }
+
+if(isset($_GET['canal'])&&isset($_GET['mensaje'])) 
+{ 
+$canal = $_GET['canal'];
+ $mensaje = $_GET['mensaje'];
+
+$mng = new MongoDB\Driver\Manager("mongodb://192.168.122.146:27017");
+
+ $insRec       = new MongoDB\Driver\BulkWrite;
+
+           $insRec->insert(['fecha' =>'20/05/2017', 'canal'=>$canal, 'mensaje'=>$mensaje]);
+
+           $writeConcern = new MongoDB\Driver\WriteConcern(MongoDB\Driver\WriteConcern::MAJORITY, 1000);
+
+             $result       = $mng->executeBulkWrite('bitacora.bitacora', $insRec, $writeConcern);
+
+
+
+}
 ?>
+
 
 </div>
 
